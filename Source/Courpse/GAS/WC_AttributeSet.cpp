@@ -21,6 +21,8 @@ UWC_AttributeSet::UWC_AttributeSet()
 	, Religion(0.f)
 	, Technology(0.f)
 	, GameSpeed(1.f)
+	, DayTime(720.0f)
+	, Days(0.f)
 {
 }
 
@@ -109,6 +111,16 @@ void UWC_AttributeSet::OnRep_GameSpeed(const FGameplayAttributeData& OldValue)
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UWC_AttributeSet, GameSpeed, OldValue);
 }
 
+void UWC_AttributeSet::OnRep_DayTime(const FGameplayAttributeData& OldValue)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UWC_AttributeSet, DayTime, OldValue);
+}
+
+void UWC_AttributeSet::OnRep_Days(const FGameplayAttributeData& OldValue)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UWC_AttributeSet, Days, OldValue);
+}
+
 
 // ************** ATTRIBUTES CHANGES
 void UWC_AttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -184,6 +196,21 @@ void UWC_AttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, f
 	{
 		GameSpeed = FMath::Clamp(NewValue, 0.1f, 4.0f);
 	}
+	else if (Attribute == GetDayTimeAttribute())
+	{
+		if(NewValue > 1440)
+		{
+			DayTime = 0;
+			Days = Days.GetCurrentValue() + 1;
+		} else
+		{
+			DayTime = FMath::Clamp(NewValue, 0.0f, 1441.0f);
+		}
+		
+	}else if (Attribute == GetDaysAttribute())
+	{
+		Days = FMath::Clamp(NewValue, 0.0f, 1441.0f);
+	}
 	
 	
 }
@@ -209,4 +236,6 @@ void UWC_AttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME_CONDITION_NOTIFY(UWC_AttributeSet, Religion, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UWC_AttributeSet, Technology, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UWC_AttributeSet, GameSpeed, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UWC_AttributeSet, DayTime, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UWC_AttributeSet, Days, COND_None, REPNOTIFY_Always);
 }

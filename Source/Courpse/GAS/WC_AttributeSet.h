@@ -95,9 +95,17 @@ public:
 	ATTRIBUTE_ACCESSORS(UWC_AttributeSet, Technology);
 
 	// ********* GameSpeed ***********
-	UPROPERTY (BlueprintReadOnly, category = "Resources", ReplicatedUsing = OnRep_GameSpeed)
+	UPROPERTY (BlueprintReadOnly, category = "Game", ReplicatedUsing = OnRep_GameSpeed)
 	FGameplayAttributeData GameSpeed;
 	ATTRIBUTE_ACCESSORS(UWC_AttributeSet, GameSpeed);
+
+	UPROPERTY (BlueprintReadOnly, category = "Game", ReplicatedUsing = OnRep_DayTime)
+	FGameplayAttributeData DayTime;
+	ATTRIBUTE_ACCESSORS(UWC_AttributeSet, DayTime);
+
+	UPROPERTY (BlueprintReadOnly, category = "Game", ReplicatedUsing = OnRep_DayTime)
+	FGameplayAttributeData Days;
+	ATTRIBUTE_ACCESSORS(UWC_AttributeSet, Days);
 	
 
 	
@@ -167,5 +175,13 @@ protected:
 	// ********* GameSpeed ***********
 	UFUNCTION()
 	virtual void OnRep_GameSpeed(const FGameplayAttributeData& OldValue);
+
+	// ********* DayTime ***********
+	UFUNCTION()
+	virtual void OnRep_DayTime(const FGameplayAttributeData& OldValue);
+
+	// ********* Days ***********
+	UFUNCTION()
+	virtual void OnRep_Days(const FGameplayAttributeData& OldValue);
 	
 };
